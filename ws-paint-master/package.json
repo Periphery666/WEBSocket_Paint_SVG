@@ -1,0 +1,21 @@
+{
+  "name": "ws-paint",
+  "version": "0.3.1",
+  "description": "A websocket-powered paint app.",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nubbel/ws-paint.git"
+  },
+  "keywords": [
+    "websockets",
+    "real-time",
+    "draw",
+    "paint"
+  ],
+  "author": "Dominique d'Argent",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io": "^0.9.19"
+  }
+}

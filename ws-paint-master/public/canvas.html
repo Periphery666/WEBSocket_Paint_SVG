@@ -1,0 +1,147 @@
+<html>
+<head>
+    <title>ws-paint canvas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            background: #ffffdd;
+        }
+    </style>
+</head>
+<body>
+<canvas id="paint-canvas" style="width:100%;height:100%;"></canvas>
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<script src=js.js>
+    // (function(global, undefined) {
+    // 	var WsPaint = {};
+    //
+    // 	WsPaint.Controller = function(options) {
+    // 		var socket 	= options.socket,
+    // 			canvas  = options.canvas,
+    // 			context = canvas.getContext('2d'),
+    // 			view 	= new WsPaint.Canvas(context);
+    //
+    // 		// Setup socket event handlers
+    // 		socket.on('connect', 	socketConnected);
+    // 	    socket.on('disconnect', socketDisconnected);
+    // 	    socket.on('data', 		socketReceivedData);
+    //
+    // 	    // Setup canvas event handlers
+    // 		canvas.addEventListener("mousedown", handleMouseEvent, false);
+    // 		canvas.addEventListener("mousemove", handleMouseEvent, false);
+    //
+    // 	    // Setup canvas touch event handlers
+    // 		canvas.addEventListener("touchstart", handleTouchEvent, false);
+    // 		canvas.addEventListener("touchmove",  handleTouchEvent, false);
+    //
+    // 		// setup window event handlers
+    // 		if (global) {
+    // 			global.addEventListener("load", windowResized, false);
+    // 			global.addEventListener("resize", windowResized, false);
+    // 		}
+    //
+    // 		function socketConnected() {
+    // 	        console.log('Client has connected to the server!');
+    // 		}
+    //
+    // 		function socketDisconnected() {
+    // 	        console.log('Client has disconnected!');
+    // 		}
+    //
+    // 		function socketReceivedData(data) {
+    // 	        console.log('Received a message from the server!', data);
+    //
+    // 	        drawPoint(data.point);
+    // 		}
+    //
+    // 		function handleMouseEvent(event) {
+    // 			// check if left mouse button pressed
+    // 			if (event.which === 1) {
+    // 				var point = {
+    // 					x: event.x / canvas.width,
+    // 					y: event.y / canvas.height
+    // 				};
+    //
+    // 				addPoint(point);
+    // 			}
+    // 		}
+    //
+    // 		function handleTouchEvent(event) {
+    // 			var touches = event.targetTouches;
+    //
+    // 			for (var i = 0; i < touches.length; i++) {
+    // 				var touch = touches[i];
+    // 				var point = {
+    // 					x: touch.clientX / canvas.width,
+    // 					y: touch.clientY / canvas.height
+    // 				}
+    //
+    // 				addPoint(point);
+    // 			};
+    //
+    // 			event.preventDefault();
+    // 		}
+    //
+    // 		function windowResized(event) {
+    // 			canvas.width  = event.target.innerWidth || event.target.width;
+    // 			canvas.height = event.target.innerHeight || event.target.height;
+    // 		}
+    //
+    // 		function sendPoint(point) {
+    // 			console.log(point);
+    //
+    // 			socket.emit('data', {
+    // 				point: point
+    // 			})
+    // 		}
+    //
+    // 		function pointSize() {
+    // 			return 0.01 * (canvas.width + canvas.height) / 2;
+    // 		}
+    //
+    // 		function drawPoint(point) {
+    // 			var viewPoint = {
+    // 				x: point.x * canvas.width,
+    // 				y: point.y * canvas.height
+    // 			}
+    //
+    // 			view.drawPoint(viewPoint, pointSize());
+    // 		}
+    //
+    // 		function addPoint(point) {
+    // 			sendPoint(point);
+    // 			drawPoint(point);
+    // 		}
+    // 	}
+    //
+    // 	WsPaint.Canvas = function(context) {
+    // 		return {
+    // 			drawPoint: function(point, size) {
+    // 				context.fillStyle	= '#301000';
+    //
+    // 				context.beginPath();
+    // 				context.arc(point.x, point.y, size, 0, 2 * Math.PI, true);
+    // 				context.fill();
+    // 			}
+    // 		};
+    // 	}
+    //
+    // 	new WsPaint.Controller({
+    // 		socket: io.connect(),
+    // 		canvas: document.getElementById("paint-canvas")
+    // 	});
+    //
+    // })(this);
+</script>
+</body>
+</html>
