@@ -4,6 +4,7 @@ let http = require('http'),
     port = 8080,
     server;
 let clients = [];
+let picturesValue = [];
 
 server = http.createServer(function (req, res) {
     console.log(new Date() + ": " + req.method + " " + req.url);
@@ -35,16 +36,26 @@ server = http.createServer(function (req, res) {
 
 io.listen(server).sockets.on('connection', function (socket) {
     clients.push(socket);
+    console.log("НОВЫЙ ТЮЛЕНЬ");
+    if (picturesValue) {
+        for (let i = 0; i < picturesValue.length; i++) {
+			console.log(`НОВЫЙ ТЮЛЕНЬ лови рыбу ${i} `);
+			socket.emit('data', picturesValue[i]);
+        }
+    }
     socket.on('data', function (data) {
-		console.log(`GOOD DATA`);
+        //console.log(`GOOD DATA`);
 
-		console.log(data);
-
-		socket.emit('data', data);
+        //console.log(data);
+        picturesValue.push(data);
+        for (let i = 0; i < clients.length; i++) {
+            clients[i].emit('data', data);
+        }
 
         //TODO SAVE TO MODEL
     });
 });
+
 
 
 // let http 	= require('http'),
