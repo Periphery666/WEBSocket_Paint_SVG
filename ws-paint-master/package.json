@@ -13,9 +13,11 @@
     "draw",
     "paint"
   ],
-  "author": "Dominique d'Argent",
+  "author": "Stas Rjazanov",
   "license": "MIT",
   "dependencies": {
-    "socket.io": "^0.9.19"
+    "body-parser": "1.19.0",
+    "express": "^4.17.1",
+    "socket.io": "0.9.19"
   }
 }

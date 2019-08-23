@@ -9,25 +9,32 @@ let dataDat = new Data();
 
 const SVGStart = function () {
 
-    this.onMouseUp = (e) => {
+    this.onMouseUp = function (e) {
         this.draw = false;
-        this.pointVec = [];
-    }
+        this.coords = null;
+        this.path = null;
+    }.bind(this);
 
-    this.onMouseDown = (e) => {
+    this.onMouseDown = function (e) {
+        dataDat.x = e.offsetX;
+        dataDat.y = e.offsetY;
+        dataDat.width = this.width.value;
+        dataDat.style =this.style.value;
         this.draw = true;
-    };
+        let str = `m${dataDat.x} ${dataDat.y} ${dataDat.width} ${dataDat.style}`;
+        this.sendPoint(str);
+    }.bind(this);
 
-    this.onMouseMove = (e) => {
+    this.onMouseMove = function (e){
         if (this.draw === true) {
             dataDat.x = e.offsetX;
             dataDat.y = e.offsetY;
-            dataDat.style = this.style.value;
             dataDat.width = this.width.value;
-
-            this.sendPoint(dataDat);
+            dataDat.style =this.style.value;
+            let str = `L${dataDat.x} ${dataDat.y} ${dataDat.width} ${dataDat.style}`;
+            this.sendPoint(str);
         }
-    };
+    }.bind(this);
 
     this.onChangeColor = function (e) {
         dataDat.style = e.value;
@@ -49,34 +56,36 @@ const SVGStart = function () {
         this.pointVec = this.pointVec.concat(point);
     };
 
+    this.startPoint = function(point) {
+
+        point = point.substring(1);
+        let array  = point.split(" ");
+
+        this.coords = `m${array[0]} ${array[1]} `;
+        this.path = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+        this.path.setAttributeNS(null, 'stroke', array[3]);
+        this.path.setAttributeNS(null, 'stroke-width', array[2]);
+        this.path.setAttributeNS(null, 'fill', 'none');
+        this.path.setAttributeNS(null, 'd', this.coords);
+        this.svg.appendChild(this.path);
+    }.bind(this);
+
     this.drawing = function (point) {
         if (this.draw || this.sendData) {
-            console.log(point.x);
-            console.log(point.y);
-            console.log(point.style);
-            console.log(point.width);
-            let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            path.setAttributeNS(null, 'stroke', point.style);
-            path.setAttributeNS(null, 'fill', 'transparent');
-            path.setAttributeNS(null, 'stroke-width', point.width);
 
-            this.path = path;
-            this.addPoint([point.x, point.y]);
-            path.setAttributeNS(null, 'd', `M ${this.pointVec.toString()}`);
-            this.svg.appendChild(path);
+            point = point.substring(1);
+            let array  = point.split(" ");
+            this.coords += `L ${array[0]} ${array[1]} `;
+            this.path.setAttributeNS(null, 'd', this.coords);
             this.sendData = false;
-            ;
         }
     }.bind(this);
 
     this.init = () => {
 
         this.svg = null;
-        this.draw = false;
         this.style = null;
         this.width = null;
-
-        this.pointVec = [];
         this.path = null;
 
         this.svg = document.querySelector('svg');
@@ -88,9 +97,8 @@ const SVGStart = function () {
 
         this.draw = false;
         this.sendData = false;
-        this.pointVec = [];
-        this.path = null;
-
+        this.pointVec = null;
+        this.coords = null;
 
         this.style = document.getElementById('color');
         this.width = document.getElementById('width');
@@ -113,34 +121,31 @@ const SVGStart = function () {
     }.bind(this);
 
     this.socketReceivedData = function (data) {
-        console.log('Received a message from the server!', data.point);
+        console.log('Received a message from the server!', data);
 
-        // let viewPoint = {
-        //     x: data.point.x,
-        //     y: data.point.y
-        // };
         this.sendData = true;
-
-        this.drawPoint(data.point);
+        this.drawPoint(data);
 
     }.bind(this);
 
     this.drawPoint = function (point) {
+        console.log(typeof point);
+        console.log(point);
 
-        this.drawing(point);
+        if (point.indexOf('m')){
+            this.drawing(point);
+        } else {
+            this.startPoint(point);
+
+        }
     }.bind(this);
 
     this.sendPoint = function (point) {
-        this.socket.emit('data', {
-            point
-        })
+        this.socket.emit('data', point
+        )
     }.bind(this);
 
 };
 
-
 let svg = new SVGStart();
-
 svg.init();
-
-
